@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.navbar-toggler{
+  border: none !important;
+}
+.navbar-toggler:focus{
+  outline: none !important;
+  box-shadow: none !important;
+}
