@@ -6,6 +6,8 @@ import { useState, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Context from '../context/Context'
 import axios from 'axios'
+import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer, toast} from 'react-toastify'
 
 const Dashboard = () => {
 
@@ -23,36 +25,19 @@ const Dashboard = () => {
             axios({url:'http://127.0.0.1:5500/api/add-collection',method:'POST' ,data:{collection_name}, headers:{'authorization':`bearer ${JSON.parse(user.token)}`}})
             .then((response)=>{
                 console.log(response)
+                toast.success(response.data)
                 setCollection_name('')
                 user.getCollections()
+                
             })
             .catch((error)=>{
                 console.log(error)
+                toast.error(error.message)
             })
         }else{
             alert('can not add collection without name')
         }
     }
-
-    // const getCollections = () =>{
-    //     axios({url:'http://127.0.0.1:5500/api/get-collection',method:'POST',headers:{"authorization":`bearer ${JSON.parse(user.token)}`}})
-    //     .then((response)=>{
-    //         setCollections(response.data)
-    //     })
-    //     .catch((error)=>{
-    //         console.log(error)
-    //     })
-    // }
-
-    // const getRecentImages = () =>{
-    //     axios({url:'http://127.0.0.1:5500/api/get-images',method:'GET',headers:{"authorization":`bearer ${JSON.parse(user.token)}`}})
-    //     .then((response)=>{
-    //         setImages(response.data)
-    //     })
-    //     .catch((error)=>{
-    //         console.log(error)
-    //     })
-    // }
 
     const imagePreview = (url) =>{
         setPreviewImage(url)
@@ -74,6 +59,7 @@ const Dashboard = () => {
 
   return (
     <>
+         <ToastContainer position='top-center' autoClose={3000} theme='light'/>
        {imgPop && <ImagePopUp image={previewImage} close={()=>setImgPop(false)}/>}
         <div className="container py-4">
             {/* Collection  */}

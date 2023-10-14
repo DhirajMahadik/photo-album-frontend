@@ -5,6 +5,8 @@ import {RiArrowGoBackFill} from 'react-icons/ri'
 import { useNavigate, useParams } from 'react-router-dom'
 import Context from '../context/Context'
 import ImagePopUp from '../components/ImagePopUp'
+import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer, toast} from 'react-toastify'
 
 
 const Collection = () => {
@@ -25,9 +27,26 @@ const Collection = () => {
         axios({url:`http://127.0.0.1:5500/api/get-collection-images/${collection_id}`,method:'GET',headers:{'authorization':`bearer ${JSON.parse(token)}`}})
         .then((response)=>{
             setImages(response.data)
+
         })
         .catch((error)=>{
             console.log(error)
+            toast.error(error.message)
+        })
+    }
+
+    const deleteCollection = () =>{
+        axios({url:`http://127.0.0.1:5500/api/delete-collection/${collection_id}`,method:'GET',headers:{'authorization':`bearer ${JSON.parse(token)}`}})
+        .then((response)=>{
+           toast.success(response.data)
+            setTimeout(()=>{
+                navigate('/')
+            },2000)
+
+        })
+        .catch((error)=>{
+            console.log(error)
+            toast.error(error.message)
         })
     }
 
@@ -41,9 +60,11 @@ const Collection = () => {
         axios({url:`http://127.0.0.1:5500/api/add-image/${collection_id}`,data:formData , method:'POST' , headers:{'authorization':`bearer ${JSON.parse(token)}`}})
         .then((response)=>{
             console.log(response)
+            toast.success(response.data)
             getCollectionImages()
         }).catch((error)=>{
             console.log(error)
+            toast.error(error.message)
         })
 
     }
@@ -66,6 +87,7 @@ const Collection = () => {
 
     return (
         <>
+        <ToastContainer position='top-center' autoClose={3000} theme='light'/>
         {imgPop && <ImagePopUp image={previewImage}  close={()=>setImgPop(false)}/>}
         <div className='mx-4 my-2'>
            <RiArrowGoBackFill role='button' onClick={()=>navigate('/')} size={20}/>
@@ -80,11 +102,11 @@ const Collection = () => {
                 <div className='my-2'>
                     <form >
                         <label htmlFor='add' className='btn btn-outline-warning btn-sm'  > <BiImageAdd size={20}/> ADD</label>
-                        <input onChange={addImg} type="file" id='add' className='d-none' />
+                        <input onChange={(e)=>addImg(e)} type="file" id='add' className='d-none' />
                     </form>
                 </div>
                 <div className='my-2'>
-                    <button className='btn btn-outline-danger btn-sm'>Delete Collection</button>
+                    <button onClick={()=>deleteCollection()} className='btn btn-outline-danger btn-sm'>Delete Collection</button>
                 </div>
             </div>
         </div>
