@@ -3,6 +3,8 @@ import { useEffect, useState, useContext } from 'react'
 import { CiCircleRemove } from 'react-icons/ci'
 import { useNavigate } from 'react-router-dom'
 import Context from '../context/Context'
+import { ToastContainer, toast } from 'react-toastify'
+
 
 const Login = ({ setLoginPopUp }) => {
 
@@ -15,7 +17,7 @@ const Login = ({ setLoginPopUp }) => {
 
     const SignInHandler = (e) => {
         e.preventDefault();
-        axios.post('http://127.0.0.1:5500/api/auth/login', data)
+        axios.post(`${process.env.REACT_APP_URL}/api/auth/login`, data)
             .then((response) => {
                 localStorage.setItem('auth_token', JSON.stringify(response.data.token))
                 user.setIsLogin(true)
@@ -25,20 +27,20 @@ const Login = ({ setLoginPopUp }) => {
                 setLoginPopUp(false)
                 navigate('/')
             }).catch((error) => {
-                
+                toast.error(error.message)
             })
     }
 
     const SignUpHandler = (e) =>{
         e.preventDefault();
         if(signUpdata.password === signUpdata.confirmP){
-            axios.post('http://127.0.0.1:5500/api/auth/register', signUpdata)
+            axios.post(`${process.env.REACT_APP_URL}/api/auth/register`, signUpdata)
             .then((response) => {
                 setSignUpdata({ email: '', password: '', confirmP:'' })
                 setType('login')
 
             }).catch((error) => {
-              
+              toast.error(error.message)
             })
         }else{
             alert('password not matched')
@@ -63,6 +65,7 @@ const Login = ({ setLoginPopUp }) => {
 
     return (
         <>
+            <ToastContainer position='top-center' theme='light' autoClose={3000}/>
             {type === 'login' ? <div className='container-fluid position-absolute d-flex z-1 ' style={{ height: '100vh', backgroundColor: '#00000099' }}>
                 <div className="d-flex p-3 flex-column bg-light m-auto position-sticky bg-secondary" style={{ height: '350px', width: '400px', borderRadius: '10px' }}>
                     <div className='d-flex justify-content-end'><CiCircleRemove role='button' onClick={() => setLoginPopUp(false)} size={25} /></div>

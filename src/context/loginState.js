@@ -10,7 +10,7 @@ const LoginState = (props) =>{
     const [images, setImages] = useState([])
 
     const getCollections = (Token) =>{
-        axios({url:'http://127.0.0.1:5500/api/get-collection',method:'POST',headers:{"authorization":`bearer ${Token !== null ? JSON.parse(Token) : JSON.parse(token)}`}})
+        axios({url: `${process.env.REACT_APP_URL}/api/get-collection` ,method:'POST',headers:{"authorization":`bearer ${Token !== null ? JSON.parse(Token) : JSON.parse(token)}`}})
         .then((response)=>{
             setCollections(response.data)
         })
@@ -20,7 +20,7 @@ const LoginState = (props) =>{
     }
 
     const getRecentImages = (Token) =>{
-        axios({url:'http://127.0.0.1:5500/api/get-images',method:'GET',headers:{"authorization":`bearer ${Token !== null ? JSON.parse(Token) : JSON.parse(token)}`}})
+        axios({url: `${process.env.REACT_APP_URL}/api/get-images` ,method:'GET',headers:{"authorization":`bearer ${Token !== null ? JSON.parse(Token) : JSON.parse(token)}`}})
         .then((response)=>{
             setImages(response.data)
         })

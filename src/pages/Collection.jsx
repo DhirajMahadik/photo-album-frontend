@@ -24,19 +24,18 @@ const Collection = () => {
     const {collection_id,collection_name} = useParams()
 
     const getCollectionImages = () =>{
-        axios({url:`http://127.0.0.1:5500/api/get-collection-images/${collection_id}`,method:'GET',headers:{'authorization':`bearer ${JSON.parse(token)}`}})
+        axios({url:`${process.env.REACT_APP_URL}/api/get-collection-images/${collection_id}`,method:'GET',headers:{'authorization':`bearer ${JSON.parse(token)}`}})
         .then((response)=>{
             setImages(response.data)
 
         })
         .catch((error)=>{
-            console.log(error)
             toast.error(error.message)
         })
     }
 
     const deleteCollection = () =>{
-        axios({url:`http://127.0.0.1:5500/api/delete-collection/${collection_id}`,method:'GET',headers:{'authorization':`bearer ${JSON.parse(token)}`}})
+        axios({url:`${process.env.REACT_APP_URL}/api/delete-collection/${collection_id}`,method:'GET',headers:{'authorization':`bearer ${JSON.parse(token)}`}})
         .then((response)=>{
            toast.success(response.data)
             setTimeout(()=>{
@@ -45,25 +44,21 @@ const Collection = () => {
 
         })
         .catch((error)=>{
-            console.log(error)
             toast.error(error.message)
         })
     }
 
     const addImg = (e) =>{
-        console.log(e)
         let data = {image:e.target.files[0]}
         let formData = new FormData()
         for( let key of Object.keys(data)){
             formData.append(key,data[key])
         }
-        axios({url:`http://127.0.0.1:5500/api/add-image/${collection_id}`,data:formData , method:'POST' , headers:{'authorization':`bearer ${JSON.parse(token)}`}})
+        axios({url:`${process.env.REACT_APP_URL}/api/add-image/${collection_id}`,data:formData , method:'POST' , headers:{'authorization':`bearer ${JSON.parse(token)}`}})
         .then((response)=>{
-            console.log(response)
             toast.success(response.data)
             getCollectionImages()
         }).catch((error)=>{
-            console.log(error)
             toast.error(error.message)
         })
 

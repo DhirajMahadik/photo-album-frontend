@@ -10,28 +10,23 @@ import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer, toast} from 'react-toastify'
 
 const Dashboard = () => {
-
-    const [imgPop , setImgPop] = useState(false)
-    const [addCollectionPop , setAddCollectionPop] = useState(false)
-    const [collection_name , setCollection_name] = useState('');
-    // const [collections, setCollections ] = useState([])
-    // const [images, setImages] = useState([])
-    const [previewImage, setPreviewImage] = useState('') 
     const user = useContext(Context)
+    const [imgPop , setImgPop] = useState(false)
+    const [collection_name , setCollection_name] = useState('');
+    const [previewImage, setPreviewImage] = useState('') 
+    const [addCollectionPop , setAddCollectionPop] = useState(false)
     const navigate = useNavigate()
 
     const addCollectionHandler = () =>{
         if(collection_name !== ''){
-            axios({url:'http://127.0.0.1:5500/api/add-collection',method:'POST' ,data:{collection_name}, headers:{'authorization':`bearer ${JSON.parse(user.token)}`}})
+            axios({url:`${process.env.REACT_APP_URL}/api/add-collection`,method:'POST' ,data:{collection_name}, headers:{'authorization':`bearer ${JSON.parse(user.token)}`}})
             .then((response)=>{
-                console.log(response)
                 toast.success(response.data)
                 setCollection_name('')
-                user.getCollections()
+                user.getCollections(null)
                 
             })
             .catch((error)=>{
-                console.log(error)
                 toast.error(error.message)
             })
         }else{
@@ -47,13 +42,13 @@ const Dashboard = () => {
     
 
     useEffect(()=>{
-        console.log(user.token)
        let token = localStorage.getItem('auth_token')
         if(user.isLogin || token) {
             user.setIsLogin(true)
             user.getCollections(null)
             user.getRecentImages(null)
         }
+        // eslint-disable-next-line
     },[])
 
 
@@ -68,7 +63,7 @@ const Dashboard = () => {
                     <h2 className='text-center'>Your Collections</h2>
                     { user.isLogin && <div role='button' onClick={()=>setAddCollectionPop(true)} className='d-flex m-auto  rounded bg-transperent fw-bold align-items-center text-light '> <FaFolderPlus color='gold' size={20} className='mx-2'/> </div> }   
                 </div>
-                {addCollectionPop && <div className="mx-auto my-2 d-flex align-items-center">
+                 {user.isLogin && addCollectionPop && <div className="mx-auto my-2 d-flex align-items-center">
                 <span className='mx-1'><CiCircleRemove onClick={()=>setAddCollectionPop(false)} size={20} role='button'/></span>
                     <input type="text" value={collection_name} onChange={(e)=>setCollection_name(e.target.value)} className='form-control form-control-sm' />
                     <span className='btn btn-primary btn-sm mx-1' onClick={addCollectionHandler}>ADD</span>
