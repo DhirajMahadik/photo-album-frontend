@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer, toast} from 'react-toastify'
 
 const Dashboard = () => {
-    const {token} = useContext(Context)
+    const user = useContext(Context)
     const [imgPop , setImgPop] = useState(false)
     const [collection_name , setCollection_name] = useState('');
     const [previewImage, setPreviewImage] = useState('') 
