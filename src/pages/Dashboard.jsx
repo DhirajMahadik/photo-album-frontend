@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer, toast} from 'react-toastify'
 
 const Dashboard = () => {
-    const user = useContext(Context)
+    const {token} = useContext(Context)
     const [imgPop , setImgPop] = useState(false)
     const [collection_name , setCollection_name] = useState('');
     const [previewImage, setPreviewImage] = useState('') 
@@ -19,7 +19,7 @@ const Dashboard = () => {
 
     const addCollectionHandler = () =>{
         if(collection_name !== ''){
-            axios({url:`${process.env.REACT_APP_URL}/api/add-collection`,method:'POST' ,data:{collection_name}, headers:{'authorization':`bearer ${JSON.parse(user.token)}`}})
+            axios({url:`${process.env.REACT_APP_URL}/api/add-collection`,method:'POST' ,data:{collection_name}, headers:{'authorization':`bearer ${JSON.parse(token)}`}})
             .then((response)=>{
                 toast.success(response.data)
                 setCollection_name('')
@@ -104,7 +104,7 @@ const Dashboard = () => {
                             <img style={{height:"100%", width:"100%"}} src={element.image_url} className='img-fluid  w-100 mx-auto mb-2' alt="" />
                             </div>
                     }): <div className="col-md-3 col-6 p-2 " style={{maxHeight:"250px", maxWidth:"250px"}}>
-                            <h6 className='text-center'>No images found in this collection</h6>
+                            <h6 className='text-center'>No images found </h6>
                     </div>
                    }
                    
