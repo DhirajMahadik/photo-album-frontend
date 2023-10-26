@@ -19,7 +19,7 @@ const Dashboard = () => {
 
     const addCollectionHandler = () =>{
         if(collection_name !== ''){
-            axios({url:`${process.env.REACT_APP_URL}/api/add-collection`,method:'POST' ,data:{collection_name}, headers:{'authorization':`bearer ${JSON.parse(token)}`}})
+            axios({url:`${process.env.REACT_APP_URL}/api/add-collection`,method:'POST' ,data:{collection_name}, headers:{'authorization':`bearer ${JSON.parse(user.token)}`}})
             .then((response)=>{
                 toast.success(response.data)
                 setCollection_name('')
