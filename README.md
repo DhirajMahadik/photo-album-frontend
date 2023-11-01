@@ -1,5 +1,10 @@
 # Getting Started with Create React App
 
+test user {
+  email / username : test@mail.com,
+  password : 123
+}
+
 BACKEND OF THIS APPLICATION 👉 https://github.com/DhirajMahadik/photo-album-backend.git
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
