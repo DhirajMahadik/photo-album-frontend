@@ -24,7 +24,7 @@ const Dashboard = () => {
             .then((response)=>{
                 toast.success(response.data)
                 setCollection_name('')
-                user.getCollections(null)
+                user.getCollections(token)
                 
             })
             .catch((error)=>{
@@ -46,8 +46,8 @@ const Dashboard = () => {
        let token = localStorage.getItem('auth_token')
         if(user.isLogin || token) {
             user.setIsLogin(true)
-            user.getCollections(null)
-            user.getRecentImages(null)
+            user.getCollections(token)
+            user.getRecentImages(token)
         }
         // eslint-disable-next-line
     },[])
